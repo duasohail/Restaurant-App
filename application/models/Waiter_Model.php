@@ -60,10 +60,10 @@ class Waiter_Model extends CI_Model{
         return $result->result_array();
     }
     
-    function get_waiters(){
-        $result = $this->db->query("SELECT * FROM  waiters");
-        return $result->result_array();
-    }
+    // function get_employees(){
+    //     $result = $this->db->query("SELECT * FROM  employees");
+    //     return $result->result_array();
+    // }
     
     
 }

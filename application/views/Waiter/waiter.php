@@ -57,14 +57,14 @@
                 <div class="row">
                     <!-- <h5 class=" mb-2 mt-2" style="width: 100%;text-align: center; color:#fff" id="table_head">Served By</h5> -->
 
-                    <div class="col-6 offset-3 form-group">
+                    <!-- <div class="col-6 offset-3 form-group">
                         <select id="waiter_name" class="form-control" name="waiter_name">
                             <option>Select Waiter</option>
                             <option>Waiter 2</option>
                             <option>Waiter 3</option>
                             <option>Waiter 4</option>
                         </select>
-                    </div>
+                    </div> -->
 
                 </div>
 

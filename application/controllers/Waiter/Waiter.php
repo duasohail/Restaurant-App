@@ -17,7 +17,7 @@ class Waiter extends CI_Controller
 		$this->load->model('Waiter_Model');
 		// //Main menu
 		$categories_data = $this->Waiter_Model->get_categories();
-		$waiters_data = $this->Waiter_Model->get_waiters();
+		// $waiters_data = $this->Waiter_Model->get_waiters();
 		$tables_data = $this->Waiter_Model->get_tables();
 		$first_main_category = $categories_data['0']['id'];
 		$first_menu = $this->Waiter_Model->get_first_menu($first_main_category);
@@ -26,7 +26,7 @@ class Waiter extends CI_Controller
 			'categories_data' => $categories_data,
 			'tables_data' => $tables_data,
 			'first_menu' => $first_menu,
-			'waiters_data' => $waiters_data,
+			// 'waiters_data' => $waiters_data,
 		];
 
 		$this->load->view('Waiter/waiter', $data);
@@ -173,11 +173,14 @@ class Waiter extends CI_Controller
 		$qtyData = $this->input->post('qtyData', TRUE);
 		$amountData = $this->input->post('amountData', TRUE);
 		$totalAmount = $this->input->post('totalAmount', TRUE);
-		$waiter = $this->session->userdata('waiter_email');
+		// $waiter = $this->session->userdata('waiter_email');
 
-		$result = $this->Waiter_Model->insert_current_order_data($current_table, $itemNameData, $sizeData, $qtyData, $amountData, $totalAmount, $waiter);
+		$result = $this->Waiter_Model->insert_current_order_data($current_table, $itemNameData, $sizeData, $qtyData, $amountData, $totalAmount);
 
 
 		echo $result;
 	}
+
+
+		
 }
