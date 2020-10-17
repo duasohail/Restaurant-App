@@ -17,7 +17,7 @@ class Waiter extends CI_Controller
 		$this->load->model('Waiter_Model');
 		// //Main menu
 		$categories_data = $this->Waiter_Model->get_categories();
-		// $waiters_data = $this->Waiter_Model->get_waiters();
+		$employees_data = $this->Waiter_Model->get_employees();
 		$tables_data = $this->Waiter_Model->get_tables();
 		$first_main_category = $categories_data['0']['id'];
 		$first_menu = $this->Waiter_Model->get_first_menu($first_main_category);
@@ -26,7 +26,7 @@ class Waiter extends CI_Controller
 			'categories_data' => $categories_data,
 			'tables_data' => $tables_data,
 			'first_menu' => $first_menu,
-			// 'waiters_data' => $waiters_data,
+			'employees_data' => $employees_data,
 		];
 
 		$this->load->view('Waiter/waiter', $data);
@@ -44,6 +44,7 @@ class Waiter extends CI_Controller
 
 		echo $result[0]['price'];
 	}
+
 	public function update_current_order()
 	{
 		// $uniqueId = 1;
@@ -56,6 +57,7 @@ class Waiter extends CI_Controller
 		$menu_item  = $this->Waiter_Model->get_menu_item_info($id);
 		$price  = $this->Waiter_Model->get_price_info($id);
 
+		$pp = $price[0]['price'];
 
 		$uid = $this->session->userdata('uid');
 
@@ -71,9 +73,9 @@ class Waiter extends CI_Controller
 		$start = $start . '</select>
 		</td>
 		<td class="p-2">
-		<input class="  form-control item_qty_' . $uid . '" id="item_qty_' . $id . '" title="' . $uid . '" autocomplete="false"  type="text" size="3" value="0" maxlength="3">
+		<input class="  form-control item_qty_' . $uid . '" id="item_qty_' . $id . '"  title="' . $uid . '" autocomplete="false"  type="text" size="3" value="1" maxlength="3">
 		</td>
-		<td class="p-2 text-center mt-1 item_amount_' . $uid . '" id="item_amount_' . $id . '" title="' . $uid . '">0</td>
+		<td class="p-2 text-center mt-1 item_amount_' . $uid . '" id="item_amount_' . $id . '"  title="' . $uid . '">' . $pp . '</td>
 		<td class=" p-2 text-center "><Button class="form-control btn-sm btn-danger btn_delete_' . $uid . '"  title="' . $uid . '"  id="btn_delete_' . $id . '" class="btn-sm btn-danger">Delete</Button></td>
 		</tr>';
 
@@ -115,9 +117,14 @@ class Waiter extends CI_Controller
 		$table_no = $this->input->post('table_no', TRUE);
 
 		$current_order = $this->Waiter_Model->get_current_order($table_no);
+
+		
 		$echo_data = '';
 
 		$total_amount = $current_order[0]['total_amount'];
+		$discount = $current_order[0]['discount'];
+
+		$this->session->set_userdata('discount', $discount);
 		//items to explode
 		$items = $current_order[0]['items'];
 		$items = explode(',', $items);
@@ -132,31 +139,34 @@ class Waiter extends CI_Controller
 		$items_amounts = explode(',', $items_amounts);
 
 
-		$items_length = sizeof($items);
+		$items_length = sizeof($sizes);
 
+		$this->session->set_userdata('beforeEditLen', $items_length);
 
 		for ($i = 0; $i < $items_length; $i++) {
-		
+
 			$result = $this->Waiter_Model->get_item_id($items[$i]);
+
 			$id = $result[0]['id'];
 
-
-			$echo_data .= '<tr class=" item_to_delete item_unique_' . $uid . '" title="' . $uid . '"  id="menu_item_'.$id.'" >
-						<td class=" p-2 mt-1 text-center item_name_' . $uid . '" id="item_name_'.$id.'">' . $items[$i] . '</td>
+			$echo_data .= '<tr class=" item_to_delete item_unique_' . $uid . '" title="' . $uid . '"  id="menu_item_' . $id . '" >
+						<td class=" p-2 mt-1 text-center item_name_' . $uid . '" id="item_name_' . $id . '">' . $items[$i] . '</td>
 						<td class="p-2">
-						<input class="  form-control item_size_' . $uid . '" id="item_size_'.$id.'" title="' . $uid . '" autocomplete="false" disabled  type="text" size="3" value="'.$sizes[$i].'">
+						<input class=" disabled  form-control item_size_' . $uid . '" id="item_size_' . $id . '" title="' . $uid . '" autocomplete="false" disabled  type="text" size="3" value="' . $sizes[$i] . '">
 						</td>
 						<td class="p-2">
-						<input class="  form-control item_qty_' . $uid . '" id="item_qty_'.$id.'" title="' . $uid . '" autocomplete="false"  type="text" size="3" value="'.$quantities[$i].'" maxlength="3">
+						<input class=" disabled  form-control item_qty_' . $uid . '" id="item_qty_' . $id . '" title="' . $uid . '" autocomplete="false" disabled  type="text" size="3" value="' . $quantities[$i] . '" maxlength="3">
 						</td>
-						<td class="p-2 text-center mt-1 item_amount_' . $uid . '" id="item_amount_'.$id.'" title="' . $uid . '">'.$items_amounts[$i].'</td>
-						<td class=" p-2 text-center "><Button class="form-control btn-sm btn-danger btn_delete_' . $uid . '"  title="' . $uid . '"  id="btn_delete_'.$id.'" class="btn-sm btn-danger">Delete</Button></td>
+						<td class="p-2 text-center  mt-1 item_amount_' . $uid . '" id="item_amount_' . $id . '" title="' . $uid . '">' . $items_amounts[$i] . '</td>
+						<td class=" p-2 text-center "><Button  class="form-control btn-sm btn-danger btn_delete_' . $uid . '"  title="' . $uid . '"  id="btn_delete_' . $id . '" class="btn-sm btn-danger">Delete</Button></td>
 						</tr>';
 
-						
-		$uid = $uid + 1;
-		$this->session->set_userdata('uid', $uid);
+
+			$uid = $uid + 1;
+			$this->session->set_userdata('uid', $uid);
 		}
+
+
 
 
 
@@ -173,14 +183,38 @@ class Waiter extends CI_Controller
 		$qtyData = $this->input->post('qtyData', TRUE);
 		$amountData = $this->input->post('amountData', TRUE);
 		$totalAmount = $this->input->post('totalAmount', TRUE);
-		// $waiter = $this->session->userdata('waiter_email');
+		$waiter = $this->input->post('waiter_name', TRUE);
+		$discount = $this->input->post('discount', TRUE);
+		$type = $this->input->post('type', TRUE);
 
-		$result = $this->Waiter_Model->insert_current_order_data($current_table, $itemNameData, $sizeData, $qtyData, $amountData, $totalAmount);
+
+
+		$result = $this->Waiter_Model->insert_current_order_data($current_table, $itemNameData, $sizeData, $qtyData, $amountData, $totalAmount, $waiter, $discount, $type);
+
+		$qty_array = explode(",", $qtyData);
+		$size_array = explode(",", $sizeData);
+		$item_array = explode(",", $itemNameData);
+
+		$this->session->set_userdata('waiter', $waiter);
+		$this->session->set_userdata('table', $current_table);
+		$this->session->set_userdata('type', $type);
+		$this->session->set_userdata('order_no', $result);
+		$this->session->set_userdata('fullTable', true);
+		$this->session->set_userdata('qty_array', $qty_array);
+		$this->session->set_userdata('size_array', $size_array);
+		$this->session->set_userdata('item_array', $item_array);
+
+
+		$items_length = sizeof($qty_array);
+		$this->session->set_userdata('len', $items_length);
 
 
 		echo $result;
 	}
 
 
-		
+	public function printFullOrder()
+	{
+		$this->load->view('printFullOrder');
+	}
 }

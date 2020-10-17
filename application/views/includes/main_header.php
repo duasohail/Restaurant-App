@@ -12,8 +12,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<script src="<?php echo base_url('assets/js/poper.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/js/jquery.js'); ?>"></script> 
 	<script src="<?php echo base_url('assets/js/sweetalert.js'); ?>"></script> 
-	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
+	<style>
+
+	::-webkit-scrollbar {
+		width: 0px;
+		background: transparent; /* make scrollbar transparent */
+	}
+
+	</style>
 	<title><?= $title ?></title>
 </head>
 

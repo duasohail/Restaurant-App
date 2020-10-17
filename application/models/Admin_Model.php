@@ -46,6 +46,13 @@ class Admin_Model extends CI_Model{
         $result=$this->db->query('SELECT item_name FROM menu_items WHERE item_cat='.$id);
         return $result->result_array();
     }
+    
+    function get_sales_report($s_d , $e_d){
+		
+        $result=$this->db->query("SELECT * FROM orders_history WHERE date = '$s_d'  ");
+        return $result->result_array();
+    }
+    
     function add_menu($id,$item,$image){
         $this->db->query('INSERT INTO menu_items ( item_name, item_cat, item_image) 
         VALUES ("'.$item.'" ,"'.$id.'","'.$image.'")');
@@ -56,7 +63,6 @@ class Admin_Model extends CI_Model{
 		
         $this->db->query('INSERT INTO main_categories(cat_name) 
                         VALUES ("'.$cat.'")');
-
 
         return true;
     }

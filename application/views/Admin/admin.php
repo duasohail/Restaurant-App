@@ -300,15 +300,34 @@
 
 
     <div class="row no-gutters text-white pt-4 bg-dark text-center sales">
-        <div class="col-sm-12 col-lg-12 col-xl-12 ">
-            sales report
+        <div class="col-sm-3 col-lg-3 col-xl-3 offset-sm-3 offset-lg-3 offset-xl-3  ">
+            <input type="date" class="form-control m-auto" name="start_data" id="start_date" placeholder="dd-mm-yyyy" value="">
         </div>
+        <div class="col-sm-3 col-lg-3 col-xl-3  ">
+        <input type="date" name="end_data" id="end_date" class="form-control m-auto" placeholder="dd-mm-yyyy" value="">
+            
+        </div>
+            <div class="col-sm-6 mt-5 col-lg-6 col-xl-6  offset-sm-3 offset-lg-3 offset-xl-3 ">
+                <button class="btn btn-danger btn_go">Go</button>
+            </div>
     </div>
 
 </div>
 
 <script>
     $(document).ready(function() {
+
+
+
+        $('.btn_go').click(function(){
+
+
+            alert($('#start_data').val());
+            alert($('#end_data').val());
+        });
+
+
+
         $('.add_table').hide();
         $('.add_category').hide();
         $('.add_menu').hide();

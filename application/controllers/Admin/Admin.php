@@ -18,7 +18,7 @@ class Admin extends CI_Controller {
 
 		
 		$this->load->view('includes/main_header' , $data);
-		$this->load->view('Admin/admin');
+		$this->load->view('Admin/reports');
 		$this->load->view('includes/main_footer');
 
 	}
@@ -32,6 +32,35 @@ class Admin extends CI_Controller {
 		redirect('Admin/Admin');
 
 	}
+	
+	public function get_sales_report()
+	{
+		$s_d=$this->input->post("s_d");
+		$e_d=$this->input->post("e_d");
+		$this->load->model('Admin_Model');
+		
+		$result=$this->Admin_Model->get_sales_report($s_d , $e_d);
+		
+		$mydata='';
+        foreach($result as $row){
+            $mydata .= '
+            <tr>
+        <td>ID</td>
+        <td>Table No</td>
+        <td>Item Name</td>
+        <td>Size</td>
+        <td>Quantity</td>
+        <td>Items Amount</td>
+        <td>Discount</td>
+        <td>Total</td>
+    </tr>
+            
+            ';
+        }
+
+		echo $mydata;
+	}
+
 	public function dlt_table(){
 		$id=$this->input->post('id');
 		$this->load->model('Admin_Model');
