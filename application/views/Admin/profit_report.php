@@ -8,10 +8,11 @@
 
     <div class="row no-gutters pt-4 bg-dark text-center">
         <div class="col-sm-12 col-lg-12 col-xl-12 ">
-            <a  href="<?= site_url('Admin/Admin/vendor_view') ?>"><button class="btn btn-danger mr-1" >Vendors Report</button></a>
+        <a  href="<?= site_url('Admin/Admin/vendor_view') ?>"><button class="btn btn-danger mr-1" >Vendors Report</button></a>
             <a  href="<?= site_url('Admin/Admin/expanse_view') ?>"><button class="btn btn-danger mr-1" >Expanse Report</button></a>
-            <a  href="<?= site_url('Admin/Admin/profit_view') ?>"><button class="btn btn-danger mr-1" >Profit Report</button></a>
+            <a  href="<?= site_url('Admin/Admin') ?>"><button class="btn btn-danger mr-1" >Sales Report</button></a>
             <a  href="<?= site_url('Admin/Admin/cancel_view') ?>"><button class="btn btn-danger mr-1" >Cancel Order Report</button></a>
+            
             <hr class="align-cneter" width="50%">
         </div>
     </div>
@@ -21,7 +22,7 @@
 
 
     <div class="row no-gutters text-white pt-4 bg-dark text-center sales">
-        <h1 class="col-12 mt-2">Sales Report</h1>
+        <h1 class="col-12 mt-2">Profit Report</h1>
         <div class="col-sm-4 col-lg-4 col-xl-4 offset-sm-4 offset-lg-4 offset-xl-4  ">
             <input type="date" class="form-control m-auto" name="s_d" id="s_d" value="">
         </div>
@@ -50,7 +51,7 @@
 
 </table>
 
-<script>
+<!-- <script>
     $(document).ready(function() {
 
         $('.btn_go').click(function() {
@@ -78,4 +79,4 @@
         });
 
     });
-</script>
+</script> -->

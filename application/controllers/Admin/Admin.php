@@ -22,6 +22,66 @@ class Admin extends CI_Controller {
 		$this->load->view('includes/main_footer');
 
 	}
+	public function vendor_view()
+	{
+		$this->load->model('Admin_Model');
+		$this->load->helper('form');
+		$data = [
+			'title' => 'Admin'
+			
+		];
+
+		
+		$this->load->view('includes/main_header' , $data);
+		$this->load->view('Admin/vendors_report');
+		$this->load->view('includes/main_footer');
+
+	}
+	public function cancel_view()
+	{
+		$this->load->model('Admin_Model');
+		$this->load->helper('form');
+		$data = [
+			'title' => 'Admin'
+			
+		];
+
+		
+		$this->load->view('includes/main_header' , $data);
+		$this->load->view('Admin/cancel_orders_report');
+		$this->load->view('includes/main_footer');
+
+	}
+	public function Profit_view()
+	{
+		$this->load->model('Admin_Model');
+		$this->load->helper('form');
+		$data = [
+			'title' => 'Admin'
+			
+		];
+
+		
+		$this->load->view('includes/main_header' , $data);
+		$this->load->view('Admin/profit_report');
+		$this->load->view('includes/main_footer');
+
+	}public function Expanse_view()
+	{
+		$this->load->model('Admin_Model');
+		$this->load->helper('form');
+		$data = [
+			'title' => 'Admin'
+			
+		];
+
+		
+		$this->load->view('includes/main_header' , $data);
+		$this->load->view('Admin/expanse_report');
+		$this->load->view('includes/main_footer');
+
+	}
+
 
 	public function add_table()
 	{
