@@ -11,7 +11,6 @@ class Login extends CI_Controller {
 			'title' => 'Login Page'
 		];
 
-		
 		$this->load->view('includes/main_header' , $data);
 		$this->load->view('login');
 		$this->load->view('includes/main_footer');

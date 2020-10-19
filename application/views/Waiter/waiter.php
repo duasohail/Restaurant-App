@@ -157,7 +157,7 @@
 <script>
     $(document).ready(function() {
 
-        var editOrder = false;
+        // var editOrder = false;
 
 
 
@@ -275,7 +275,7 @@
                                                 var uid = $(this).attr('title');
                                                 
                                                 
-                                                if(editOrder == false){
+                                                if(true){
                                                     $('.table_order_summary').children('tbody').children('.item_unique_' + uid).remove();
                                                  }else{
                                                      alert('While Editing You Can Not Delete Items');
@@ -444,7 +444,7 @@
                 } else {
 
                     if ($(this).hasClass('bg-danger')) {
-                        editOrder = true;
+                        // editOrder = true;
 
                         // alert('edit order is true now')
 
@@ -469,7 +469,7 @@
                                 $('.table_order_summary').children('tbody').children('.item_to_delete').remove();
                                 $('.table_order_summary').children('tbody').append(result);
 
-                                editOrder = true;
+                                // editOrder = true;
 
 
                                 var total = 0;
@@ -506,7 +506,7 @@
                                             var uid = $(this).attr('title');
                                             
                                             // $('.table_order_summary').children('tbody').children('.item_unique_' + uid).remove();
-                                            if(editOrder == false){
+                                            if(true){
                                                     $('.table_order_summary').children('tbody').children('.item_unique_' + uid).remove();
                                                  }else{
                                                      alert('While Editing You Can Not Delete Items');
@@ -660,7 +660,7 @@
 
                     } else {
 
-                        editOrder = false;
+                        // editOrder = false;
                         $('#type').prop('disabled', false);
 
                         var id = $(this).attr('id');
@@ -994,7 +994,7 @@
                                             var uid = $(this).attr('title');
     
     
-                                            if(editOrder == false){
+                                            if(true){
                                                     $('.table_order_summary').children('tbody').children('.item_unique_' + uid).remove();
                                                  }else{
                                                      alert('While Editing You Can Not Delete Items');

@@ -8,10 +8,7 @@
 
     <div class="row no-gutters pt-4 bg-dark text-center">
         <div class="col-sm-12 col-lg-12 col-xl-12 ">
-        <a  href="<?= site_url('Admin/Admin/vendor_view') ?>"><button class="btn btn-danger mr-1" >Vendors Report</button></a>
-            <a  href="<?= site_url('Admin/Admin/expanse_view') ?>"><button class="btn btn-danger mr-1" >Expanse Report</button></a>
-            <a  href="<?= site_url('Admin/Admin') ?>"><button class="btn btn-danger mr-1" >Sales Report</button></a>
-            <a  href="<?= site_url('Admin/Admin/profit_view') ?>"><button class="btn btn-danger mr-1" >Sales Report</button></a>
+        <a  href="<?= site_url('Admin/Admin') ?>"><button class="btn btn-danger mr-1" >Sales Report</button></a>
             
             <hr class="align-cneter" width="50%">
         </div>
@@ -30,28 +27,22 @@
             <input type="date" name="e_d" id="e_d" class="form-control m-auto" value="">
 
         </div> -->
-        <div class="col-sm-6 mt-5 col-lg-6 col-xl-6  offset-sm-3 offset-lg-3 offset-xl-3 ">
+        <div class="col-sm-6 mt-2 col-lg-6 col-xl-6  offset-sm-3 offset-lg-3 offset-xl-3 ">
             <button class="btn btn-danger btn_go">Go</button>
+        </div>
+        <div class="col-sm-6 mt-2 col-lg-6 col-xl-6  offset-sm-3 offset-lg-3 offset-xl-3 ">
+            <button class="btn btn-danger btn_print">Print</button>
         </div>
     </div>
 </div>
 
-<table class='w-100 mt-3 bg-light text-center sales_report_table'>
-    <tr>
-        <th>ID</th>
-        <th>Table No</th>
-        <th>Item Name</th>
-        <th>Size</th>
-        <th>Quantity</th>
-        <th>Items Amount</th>
-        <th>Discount</th>
-        <th>Total</th>
-    </tr>
+<table class='w-100 mt-3 table bg-light text-center cancle_report_table'>
+    
     
 
 </table>
 
-<!-- <script>
+<script>
     $(document).ready(function() {
 
         $('.btn_go').click(function() {
@@ -62,7 +53,7 @@
 
             $.ajax({
 
-                url: "<?php echo site_url("Admin/Admin/get_sales_report"); ?>",
+                url: "<?php echo site_url("Admin/Admin/get_cancle_report"); ?>",
                 type: "POST",
                 data: {
                     s_d:s_d,
@@ -70,13 +61,18 @@
                 },
                 cache: false,
                 success: function(data) {
-                    $('.sales_report_table').append(data);
-                    // alert(data);
+                    $('.cancle_report_table').empty();
+                    $('.cancle_report_table').append(data);
+                    
                 }
 
 
             });
         });
 
+        $('.btn_print').click(function(){
+            document.location = "<?php echo site_url('Admin/Admin/print_cancle') ?>"; 
+        });
+
     });
-</script> -->
+</script>

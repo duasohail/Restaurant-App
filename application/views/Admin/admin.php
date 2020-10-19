@@ -13,9 +13,10 @@
             <button class="btn btn-sm btn-danger mr-1" onclick="show_category_sec()">Add Category</button>
             <button class="btn btn-sm btn-danger mr-1" onclick="show_menu_sec()">Add Menu Items</button>
             <button class="btn btn-sm btn-danger mr-1" onclick="show_price_sec()">Price & Size</button>
-            <button class="btn btn-sm btn-danger mr-1" onclick="show_vendor_sec()">Add_vendor</button>
-            <button class="btn btn-sm btn-danger mr-1" onclick="show_report_sec()">Sales Report</button>
-
+            <!-- <button class="btn btn-sm btn-danger mr-1" onclick="show_vendor_sec()">Add_vendor</button> -->
+            <a href="<?= site_url('Admin/Admin/reports_view') ?>">
+                <button class="btn btn-sm btn-danger mr-1">Sales Report</button>
+            </a>
 
 
 
@@ -216,7 +217,7 @@
         <div class="col-sm-12 col-lg-12 col-xl-12 ">
 
             <center>
-                <?php echo form_open('Admin/Admin/add_menu'); ?>
+                <!-- <?php echo form_open('Admin/Admin/add_menu'); ?> -->
                 <div class="card w-75 bg-dark shadow">
 
                     <div class="card-header">
@@ -240,7 +241,7 @@
                     </div>
 
                 </div>
-                </form>
+                <!-- </form> -->
             </center>
         </div>
     </div>
@@ -259,27 +260,32 @@
                     <div class="card-body">
                         <p class="card-text">
 
-                            <select class="form-control" name="category_name">
-                                <option>Category Name</option>
+                            <select class="form-control" name="category_name" id="category_name">
+                                <option>Select Category</option>
+
+                                <?php foreach ($category as $row) { ?>
+                                    <option value="<?php echo $row['id']; ?>"><?php echo $row['cat_name']; ?></option>
+
+                                <?php } ?>
 
                             </select>
                             <br>
-                            <select class="form-control" name="item_name">
-                                <option>Item Name</option>
+                            <select class="form-control" id="item_name">
 
                             </select>
                             <br>
 
-                            <input class="form-control" type="text" name="item_name" placeholder="Price">
+                            <input class="form-control" type="text" id="item_size" placeholder="Size">
                             <br>
-                            <input class="form-control" type="text" name="item_name" placeholder="Size">
+
+                            <input class="form-control" type="text" id="item_price" placeholder="Price">
                             <br>
 
                         </p>
 
                     </div>
                     <div class="card-footer text-muted">
-                        <button class="btn btn-md btn-danger" type="submit">Submit</button>
+                        <button class="btn btn-md btn-danger" id="add_price_size" type="submit">Submit</button>
                     </div>
                     </form>
                 </div>
@@ -304,12 +310,12 @@
             <input type="date" class="form-control m-auto" name="start_data" id="start_date" placeholder="dd-mm-yyyy" value="">
         </div>
         <div class="col-sm-3 col-lg-3 col-xl-3  ">
-        <input type="date" name="end_data" id="end_date" class="form-control m-auto" placeholder="dd-mm-yyyy" value="">
-            
+            <input type="date" name="end_data" id="end_date" class="form-control m-auto" placeholder="dd-mm-yyyy" value="">
+
         </div>
-            <div class="col-sm-6 mt-5 col-lg-6 col-xl-6  offset-sm-3 offset-lg-3 offset-xl-3 ">
-                <button class="btn btn-danger btn_go">Go</button>
-            </div>
+        <div class="col-sm-6 mt-5 col-lg-6 col-xl-6  offset-sm-3 offset-lg-3 offset-xl-3 ">
+            <button class="btn btn-danger btn_go">Go</button>
+        </div>
     </div>
 
 </div>
@@ -319,7 +325,7 @@
 
 
 
-        $('.btn_go').click(function(){
+        $('.btn_go').click(function() {
 
 
             alert($('#start_data').val());
@@ -367,10 +373,65 @@
                         //alert(responce);
                         $('#show_item').empty();
                         $('#show_item').append(responce);
+
+
+                        $('.dlt_item').on('click', function() {
+                            // alert("hi");
+
+                            var id = $(this).attr('value');
+                            // alert(id);
+                            $.ajax({
+                                url: "<?php echo site_url('Admin/Admin/dlt_menu_item') ?>",
+                                type: "POST",
+                                data: {
+                                    id: id
+                                },
+                                success: function(responce) {
+                                    window.location.reload();
+                                }
+                            });
+
+                        });
+                        $('.edit_item').on('click', function() {
+                            //  alert("hi");
+
+                            var edit_id = $(this).attr('value');
+                            //   alert(edit_id);
+                            var item = prompt("enter new item name");
+                            $('.item_' + edit_id).html(item);
+                            $.ajax({
+                                url: "<?php echo site_url('Admin/Admin/edit_menu_item') ?>",
+                                type: "POST",
+                                data: {
+                                    id: edit_id,
+                                    item_name: item
+                                },
+                                success: function(responce) {
+                                    Swal.fire({
+
+                                        position: 'center',
+                                        icon: 'success',
+                                        title: 'Succesfully Done',
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    });
+
+                                    setTimeout(function(){
+            
+                                        window.location.reload();
+
+                                    } , 2000);
+                                }
+                            });
+
+                        });
+
+
                     }
                 });
             });
         }
+
 
 
         $('.dlt').on('click', function() {
@@ -385,6 +446,65 @@
                 },
                 success: function(responce) {
                     window.location.reload();
+                }
+            });
+
+        });
+
+
+        $('#category_name').on('change', function() {
+            // alert("hi");
+            var id = $(this).val();
+            // alert(id);
+            $.ajax({
+                url: "<?php echo site_url('Admin/Admin/get_menu_items') ?>",
+                type: "POST",
+                data: {
+                    id: id
+                },
+                success: function(responce) {
+                    // alert(responce);
+                    $('#item_name').empty();
+                    $('#item_name').append(responce);
+
+                }
+            });
+
+        });
+
+        $('#add_price_size').on('click', function() {
+
+
+            var id = $('#item_name').val();
+            var price = $('#item_price').val();
+            var size = $('#item_size').val();
+
+
+            $.ajax({
+                url: "<?php echo site_url('Admin/Admin/add_price_size') ?>",
+                type: "POST",
+                data: {
+                    id: id,
+                    price: price,
+                    size: size
+                },
+                success: function(responce) {
+                    Swal.fire({
+
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Succesfully Done',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+
+                    
+                    setTimeout(function(){
+            
+            window.location.reload();
+
+        } , 2000);
+
                 }
             });
 
@@ -408,9 +528,16 @@
                         icon: 'success',
                         title: 'Delete Succesfully Done',
                         showConfirmButton: false,
-                        timer: 3000
+                        timer: 2000
                     });
-                    window.location.reload();
+
+
+                    
+                    setTimeout(function(){
+            
+            window.location.reload();
+
+        } , 2000);
                 }
             });
 
@@ -439,6 +566,13 @@
                         showConfirmButton: false,
                         timer: 2000
                     });
+
+                    
+                    setTimeout(function(){
+            
+            window.location.reload();
+
+        } , 2000);
 
                 }
             });

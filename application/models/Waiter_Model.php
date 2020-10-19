@@ -32,6 +32,7 @@ class Waiter_Model extends CI_Model
         $result = $this->db->query('SELECT * FROM price WHERE item_id=' . $id);
         return $result->result_array();
     }
+    
     function get_item_price($id, $currentSize)
     {
         $result = $this->db->query("SELECT * FROM price WHERE item_id='$id' AND size='$currentSize'");

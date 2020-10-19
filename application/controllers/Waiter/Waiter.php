@@ -51,39 +51,42 @@ class Waiter extends CI_Controller
 
 		$id = $this->input->post('id', TRUE);
 
-
+		$start = '';
 
 		$this->load->model('Waiter_Model');
 		$menu_item  = $this->Waiter_Model->get_menu_item_info($id);
 		$price  = $this->Waiter_Model->get_price_info($id);
+		if (!empty($price[0])) {
+			$pp = $price[0]['price'];
 
-		$pp = $price[0]['price'];
+			$uid = $this->session->userdata('uid');
 
-		$uid = $this->session->userdata('uid');
+			$start .=  '<tr class=" item_to_delete item_unique_' . $uid . '" title="' . $uid . '"  id="menu_item_' . $id . '" >
+						<td class=" p-2 mt-1 text-center item_name_' . $uid . '" id="item_name_' . $id . '">' . $menu_item[0]['item_name'] . '</td>
+						<td class="p-2">
+						<select class="  form-control item_size_' . $uid . '" id="item_size_' . $id . '" title="' . $uid . '" name="" id="">';
 
-		$start =  '<tr class=" item_to_delete item_unique_' . $uid . '" title="' . $uid . '"  id="menu_item_' . $id . '" >
-		<td class=" p-2 mt-1 text-center item_name_' . $uid . '" id="item_name_' . $id . '">' . $menu_item[0]['item_name'] . '</td>
-		<td class="p-2">
-		<select class="  form-control item_size_' . $uid . '" id="item_size_' . $id . '" title="' . $uid . '" name="" id="">';
+			foreach ($price as $p) {
+				$start = $start . '<option class="text-center" id="' . $p['price'] . '"  value="' . $p['size'] . '">' . $p['size'] . '</option>';
+			}
 
-		foreach ($price as $p) {
-			$start = $start . '<option class="text-center" id="' . $p['price'] . '"  value="' . $p['size'] . '">' . $p['size'] . '</option>';
+			$start = $start . '</select>
+							</td>
+							<td class="p-2">
+							<input class="  form-control item_qty_' . $uid . '" id="item_qty_' . $id . '"  title="' . $uid . '" autocomplete="false"  type="text" size="3" value="1" maxlength="3">
+							</td>
+							<td class="p-2 text-center mt-1 item_amount_' . $uid . '" id="item_amount_' . $id . '"  title="' . $uid . '">' . $pp . '</td>
+							<td class=" p-2 text-center "><Button class="form-control btn-sm btn-danger btn_delete_' . $uid . '"  title="' . $uid . '"  id="btn_delete_' . $id . '" class="btn-sm btn-danger">Delete</Button></td>
+							</tr>';
+
+			$uid = $uid + 1;
+			$this->session->set_userdata('uid', $uid);
+		} else {
+
+			$start = '<tr><td colspan="5" class="p-2 text-center">You Have Not Added Price And Size For That Item So Please Do So And Try Again!!!!<td></tr>';
 		}
 
-		$start = $start . '</select>
-		</td>
-		<td class="p-2">
-		<input class="  form-control item_qty_' . $uid . '" id="item_qty_' . $id . '"  title="' . $uid . '" autocomplete="false"  type="text" size="3" value="1" maxlength="3">
-		</td>
-		<td class="p-2 text-center mt-1 item_amount_' . $uid . '" id="item_amount_' . $id . '"  title="' . $uid . '">' . $pp . '</td>
-		<td class=" p-2 text-center "><Button class="form-control btn-sm btn-danger btn_delete_' . $uid . '"  title="' . $uid . '"  id="btn_delete_' . $id . '" class="btn-sm btn-danger">Delete</Button></td>
-		</tr>';
-
-		$uid = $uid + 1;
-		$this->session->set_userdata('uid', $uid);
-
 		echo $start;
-
 		$start = '';
 	}
 
@@ -118,7 +121,7 @@ class Waiter extends CI_Controller
 
 		$current_order = $this->Waiter_Model->get_current_order($table_no);
 
-		
+
 		$echo_data = '';
 
 		$total_amount = $current_order[0]['total_amount'];
@@ -147,23 +150,27 @@ class Waiter extends CI_Controller
 
 			$result = $this->Waiter_Model->get_item_id($items[$i]);
 
-			$id = $result[0]['id'];
+			if (!empty($result[0])) {
 
-			$echo_data .= '<tr class=" item_to_delete item_unique_' . $uid . '" title="' . $uid . '"  id="menu_item_' . $id . '" >
-						<td class=" p-2 mt-1 text-center item_name_' . $uid . '" id="item_name_' . $id . '">' . $items[$i] . '</td>
-						<td class="p-2">
-						<input class=" disabled  form-control item_size_' . $uid . '" id="item_size_' . $id . '" title="' . $uid . '" autocomplete="false" disabled  type="text" size="3" value="' . $sizes[$i] . '">
-						</td>
-						<td class="p-2">
-						<input class=" disabled  form-control item_qty_' . $uid . '" id="item_qty_' . $id . '" title="' . $uid . '" autocomplete="false" disabled  type="text" size="3" value="' . $quantities[$i] . '" maxlength="3">
-						</td>
-						<td class="p-2 text-center  mt-1 item_amount_' . $uid . '" id="item_amount_' . $id . '" title="' . $uid . '">' . $items_amounts[$i] . '</td>
-						<td class=" p-2 text-center "><Button  class="form-control btn-sm btn-danger btn_delete_' . $uid . '"  title="' . $uid . '"  id="btn_delete_' . $id . '" class="btn-sm btn-danger">Delete</Button></td>
-						</tr>';
+				$id = $result[0]['id'];
+				$echo_data .= '<tr class=" item_to_delete item_unique_' . $uid . '" title="' . $uid . '"  id="menu_item_' . $id . '" >
+				<td class=" p-2 mt-1 text-center item_name_' . $uid . '" id="item_name_' . $id . '">' . $items[$i] . '</td>
+				<td class="p-2">
+				<input class=" disabled  form-control item_size_' . $uid . '" id="item_size_' . $id . '" title="' . $uid . '" autocomplete="false" disabled  type="text" size="3" value="' . $sizes[$i] . '">
+				</td>
+				<td class="p-2">
+				<input class=" disabled  form-control item_qty_' . $uid . '" id="item_qty_' . $id . '" title="' . $uid . '" autocomplete="false" disabled  type="text" size="3" value="' . $quantities[$i] . '" maxlength="3">
+				</td>
+				<td class="p-2 text-center  mt-1 item_amount_' . $uid . '" id="item_amount_' . $id . '" title="' . $uid . '">' . $items_amounts[$i] . '</td>
+				<td class=" p-2 text-center "><Button  class="form-control btn-sm btn-danger btn_delete_' . $uid . '"  title="' . $uid . '"  id="btn_delete_' . $id . '" class="btn-sm btn-danger">Delete</Button></td>
+				</tr>';
 
 
-			$uid = $uid + 1;
-			$this->session->set_userdata('uid', $uid);
+				$uid = $uid + 1;
+				$this->session->set_userdata('uid', $uid);
+			} else {
+				$echo_data = '';
+			}
 		}
 
 
